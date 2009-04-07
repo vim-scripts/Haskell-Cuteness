@@ -1,0 +1,6 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2603
+
+This script is inspired by emacs's haskell-unicode-cuteness and based on vimscript #284 by Jos van den Oever.
+Converts all lambdas, equality, non-equality, get, let and arrows (<-, ->) to correspoding unicode symbols. If you think that I should add more characters, please feel free to email me or post your wishes in comments.
+
+screenshot http://braintrace.ru/media/haskell_cuteness.png
