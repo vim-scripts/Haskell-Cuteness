@@ -1,10 +1,17 @@
 " Haskell Cuteness for Vim.
 " Inspired by emacs-haskell-cuteness.
 " Based on unilatex.vim by Jos van den Oever <oever@fenk.wau.nl>
-" Version: 0.1
+"
+" Changelog
+"   0.1.2 - added syntax highlighting as suggested by sfvisser at Reddit
+"   0.1.1 - fixed stupid bug with haskell lambda expression
+"   0.1 - initial release
+"
+" Version: 0.1.2
 " Last Changed: 7 April 2009
 " Maintainer: Andrey Popp <andrey.popp@braintrace.ru>
 
+" Map to unicode symbols
 imap <buffer> \ λ
 imap <buffer> <- ←
 imap <buffer> -> →
@@ -12,6 +19,9 @@ imap <buffer> <= ≲
 imap <buffer> >= ≳
 imap <buffer> == ≡
 imap <buffer> /= ≠
+
+" Turn syntax highlight on for new symbols
+syn match hsVarSym "(\|λ\|←\|→\|≲\|≳\|≡\|≠\| )"
 
 if exists("s:loaded_unihaskell")
 	finish
