@@ -3,6 +3,8 @@
 " Based on unilatex.vim by Jos van den Oever <oever@fenk.wau.nl>
 "
 " Changelog
+"   0.1.3 - added more mappings and fixed bug in HaskellSrcToUTF8, thanks
+"           to edwardkmett at Reddit
 "   0.1.2 - added syntax highlighting as suggested by sfvisser at Reddit
 "   0.1.1 - fixed stupid bug with haskell lambda expression
 "   0.1 - initial release
@@ -19,6 +21,11 @@ imap <buffer> <= ≲
 imap <buffer> >= ≳
 imap <buffer> == ≡
 imap <buffer> /= ≠
+imap <buffer> => ⇒
+imap <buffer> >> »
+imap <buffer> .<space> ∙<space>
+imap <buffer> forall<space> ∀
+
 
 " Turn syntax highlight on for new symbols
 syn match hsVarSym "(\|λ\|←\|→\|≲\|≳\|≡\|≠\| )"
@@ -46,6 +53,11 @@ function s:UTF8ToHaskellSrc()
 	silent %s/≳/>=/eg
     silent %s/≡/==/eg
     silent %s/≠/\/=/eg
+    silent %s/⇒/=>/eg
+    silent %s/»/>>/eg
+    silent %s/∙ /. /eg
+    silent %s/∀/forall /eg
+
 
 	let &l:fileencoding = s:oldencoding
 	call cursor(s:line,s:column)
@@ -59,14 +71,18 @@ function s:HaskellSrcToUTF8()
 	let s:oldencoding = &l:fileencoding
 	set fileencoding=utf-8
 
-	silent %s/\\/λ/eg
-	silent %s/->/→/eg
-	silent %s/<-/←/eg
-	silent %s/<=/≲/eg
-	silent %s/>=/≳/eg
-    silent %s/==/≡/eg
-    silent %s/\/=/≠/eg
-
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=\\\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/λ\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=->\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/→\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=<-\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/←\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=<=\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/≲\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=>=\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/≳\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<===\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/≡\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=\/=\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/≠\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<==>\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/⇒\1/eg
+    silent %s/[^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>?@\^|~.]\@<=>>\([^λ←→≲≳≡≠⇒»∙∀\\\-!#$%&*+/<=>\?@\^|~.]\)/»\1/eg
+    silent %s/forall /∀/eg
+    silent %s/ \@<=\. /∙ /eg
+    
 	let &l:fileencoding = s:oldencoding
 	call cursor(s:line,s:column)
 endfunction
